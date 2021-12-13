@@ -1,1 +1,3 @@
-this is file2
+file2
+this is second line
+tha lines were created by the git bash vi editor
