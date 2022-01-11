@@ -1,0 +1,37 @@
+pipeline {
+    agent {
+  label 'harislave'
+}
+
+environment {
+  PATH = "/opt/maven/bin:$PATH"
+}
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+		stage('checkout') {
+		steps {
+		checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubcred', url: 'https://github.com/hari181842/devops.git']]])
+		}
+	    }
+	   stage ('build') {
+	   steps {
+	   sh 'mvn package'
+	  }
+	  }
+	  stage ('deploy') {
+	  steps {
+	  deploy adapters: [tomcat8(credentialsId: 'tomcat-cred_hari', path: '', url: 'http://3.111.66.27:8080')], contextPath: 'hareesh', war: '**/*.war'
+    }
+	}
+	  stage ('artifact_uploader') {
+	  steps {
+       nexusArtifactUploader artifacts: [[artifactId: 'hello-world-war', classifier: '', file: '/home/ec2-user/workspace/hari_pipeline/target/hello-world-war-3.0.4.war', type: 'war']], credentialsId: 'nexus_hari', groupId: 'com.efsavage', nexusUrl: '3.109.229.170:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'hari-repo', version: '3.0.4'
+	}
+	}
+    }
+}
+
