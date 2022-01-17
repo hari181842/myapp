@@ -1,5 +1,4 @@
 pipeline {
- parameter{
  parameters {
   choice choices: ['dev', 'stg', 'master'], description: 'please select your branch', name: 'Branch'
 }
