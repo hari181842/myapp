@@ -30,7 +30,7 @@ environment {
 	  stage ('artifact_uploader') {
 	  steps {
 	  script{
-	  def mavempom = redaMavenPom 'pom.xml' 
+	  def mavempom = redaMavenPom file 'pom.xml' 
 	  nexusArtifactUploader artifacts: [[artifactId: 'hello-world-war', classifier: '', file: "target/hello-world-war-3.0.7.war-${mavenpom.version}", type: 'war']], credentialsId: 'nexus_hari', groupId: 'com.efsavage', nexusUrl: '3.109.229.170:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'hari-repo', version: "${mavenpom.version}"
 	}
 	}
