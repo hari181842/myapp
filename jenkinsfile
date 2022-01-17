@@ -1,9 +1,9 @@
 pipeline {
- parameters {
-  choice choices: ['dev', 'stg', 'master'], description: 'please select your branch', name: 'Branch'
+  parameters {
+  choice choices: ['dev', 'stg', 'master'], description: 'Please select your branch', name: 'Branch'
 }
     agent any
-environment {
+     environment {
   PATH = "/opt/maven/bin:$PATH"
 }
     stages {
@@ -14,26 +14,65 @@ environment {
         }
 		stage('checkout') {
 		steps {
-		checkout([$class: 'GitSCM', branches: [[name: "*/${Branch}"]], extensions: [], userRemoteConfigs: [[credentialsId: 'githubcred', url: 'https://github.com/hari181842/devops.git']]])
-		}
-	    }
-	   stage ('build') {
-	   steps {
-	   sh 'mvn package'
-	  }
-	  }
-	   stage ('deploy') {
-	   steps {
-	   deploy adapters: [tomcat8(credentialsId: 'tomcat-cred_hari', path: '', url: 'http://3.111.66.27:8080')], contextPath: 'devops', war: '**/*.war'
-	  }
-	  }
-	  stage ('artifact_uploader') {
-	   steps {
-	   script{
-	   def mavenpom=readMavenPom file 'pom.xml' 
-	   nexusArtifactUploader artifacts: [[artifactId: 'hello-world-war', classifier: '', file: "target/hello-world-war-${MavenPom.version}".war, type: 'war']], credentialsId: 'nexus_hari', groupId: 'com.efsavage', nexusUrl: '3.109.229.170:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'hari-repo', version: "${MavenPom.version}"
-	  }
-	  }
-	  }
-     }
+		checkout(
+		[
+		$class: 'GitSCM', 
+		branches: [
+		[name: "*/${Branch}"
+		]
+		], 
+		extensions: [
+		],
+		userRemoteConfigs: [
+		[
+		credentialsId: 'Github', url: 'https://github.com/hari181842/devops.git']
+		]
+		]
+		)
+    }
 }
+  stage('build'){
+  steps{
+  sh 'mvn package'
+  }
+ }
+ stage ('Artifact upload') {
+ steps{
+     script{
+     def mavenPom = readMavenPom file: 'pom.xml'
+     nexusArtifactUploader artifacts: 
+    [
+    [
+     artifactId: 'hello-world-war', 
+     classifier: '',
+    file: "target/hello-world-war-${mavenPom.version}.war", 
+    type: 'war'
+ ]
+ ], 
+ credentialsId: 'Nexus-cred',
+ groupId: 'com.efsavage',
+ nexusUrl: '3.109.229.170:8081', 
+ nexusVersion: 'nexus3', 
+ protocol: 'http', 
+ repository: 'hari-repo', 
+ version: "${mavenPom.version}" 
+     }
+   }
+  }
+  stage('deploy'){
+      steps{
+          deploy adapters: 
+          [
+              tomcat8
+              (
+                  credentialsId: 'tomcat-cred_hari',
+                   path: '',
+                    url: 'http://3.111.66.27:8080'
+                    )
+                    ],
+                     contextPath: 'devops', war: '**/*.war'
+      }
+  }
+  }
+}
+  
