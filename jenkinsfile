@@ -54,7 +54,7 @@ pipeline {
  nexusUrl: '3.109.229.170:8081', 
  nexusVersion: 'nexus3', 
  protocol: 'http', 
- repository: 'hari-repo-1', 
+ repository: 'hari-repo', 
  version: "${mavenPom.version}" 
      }
    }
