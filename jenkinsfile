@@ -22,10 +22,6 @@ environment {
 	   sh 'mvn package'
 	  }
 	  }
-	  stage ('deploy') {
-	  steps {
-	  deploy adapters: [tomcat8(credentialsId: 'tomcat-cred_hari', path: '', url: 'http://3.111.66.27:8080')], contextPath: 'dev3', war: '**/*.war'
-    }
 	}
 	  stage ('artifact_uploader') {
 	  steps {
@@ -34,6 +30,11 @@ environment {
 	  nexusArtifactUploader artifacts: [[artifactId: 'hello-world-war', classifier: '', file: "target/hello-world-war-${mavenpom.version}".war, type: 'war']], credentialsId: 'nexus_hari', groupId: 'com.efsavage', nexusUrl: '3.109.229.170:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'hari-repo', version: "${mavenpom.version}"
 	}
 	}
+	stage ('deploy') {
+	  steps {
+	  deploy adapters: [tomcat8(credentialsId: 'tomcat-cred_hari', path: '', url: 'http://3.111.66.27:8080')], contextPath: 'dev3', war: '**/*.war'
+    }
+	}
     }
 }
-}
+
