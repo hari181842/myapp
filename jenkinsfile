@@ -35,6 +35,7 @@ environment {
 	   nexusArtifactUploader artifacts: [[artifactId: 'hello-world-war', classifier: '', file: "target/hello-world-war-${mavenpom.version}".war, type: 'war']], credentialsId: 'nexus_hari', groupId: 'com.efsavage', nexusUrl: '3.109.229.170:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'hari-repo', version: "${mavenpom.version}"
 	  }
 	  }
+	  }
     }
 }	
 
