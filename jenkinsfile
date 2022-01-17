@@ -29,7 +29,7 @@ environment {
 	}
 	  stage ('artifact_uploader') {
 	  steps {
-       nexusArtifactUploader artifacts: [[artifactId: 'hello-world-war', classifier: '', file: '/home/ec2-user/workspace/hari_pipeline/target/hello-world-war-3.0.6.war', type: 'war']], credentialsId: 'nexus_hari', groupId: 'com.efsavage', nexusUrl: '3.109.229.170:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'hari-repo', version: '3.0.6'
+       nexusArtifactUploader artifacts: [[artifactId: 'hello-world-war', classifier: '', file: 'target/hello-world-war-3.0.6.war', type: 'war']], credentialsId: 'nexus_hari', groupId: 'com.efsavage', nexusUrl: '3.109.229.170:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'hari-repo', version: '3.0.6'
 	}
 	}
     }
