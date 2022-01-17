@@ -1,8 +1,9 @@
 pipeline {
-    agent {
-  label 'harislave'
+ parameter{
+ parameters {
+  choice choices: ['dev', 'stg', 'master'], description: 'please select your branch', name: 'Branch'
 }
-
+    agent 
 environment {
   PATH = "/opt/maven/bin:$PATH"
 }
@@ -14,7 +15,7 @@ environment {
         }
 		stage('checkout') {
 		steps {
-		checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'githubcred', url: 'https://github.com/hari181842/devops.git']]])
+		checkout([$class: 'GitSCM', branches: [[name: "*/${Branch}"]], extensions: [], userRemoteConfigs: [[credentialsId: 'githubcred', url: 'https://github.com/hari181842/devops.git']]])
 		}
 	    }
 	   stage ('build') {
