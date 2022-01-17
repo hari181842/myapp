@@ -24,7 +24,7 @@ environment {
 	  }
 	  stage ('deploy') {
 	  steps {
-	  deploy adapters: [tomcat8(credentialsId: 'tomcat-cred_hari', path: '', url: 'http://3.111.66.27:8080')], contextPath: 'dev1', war: '**/*.war'
+	  deploy adapters: [tomcat8(credentialsId: 'tomcat-cred_hari', path: '', url: 'http://3.111.66.27:8080')], contextPath: 'dev2', war: '**/*.war'
     }
 	}
 	  stage ('artifact_uploader') {
