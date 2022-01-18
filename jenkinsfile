@@ -2,7 +2,9 @@ pipeline {
   parameters {
   choice choices: ['dev', 'stg', 'master'], description: 'Please select your branch', name: 'Branch'
 }
-    agent any
+   agent {
+     label 'harislave'
+   } 
      environment {
   PATH = "/opt/maven/bin:$PATH"
 }
